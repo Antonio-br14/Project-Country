@@ -23,7 +23,7 @@ public class Principal {
         var opcion = -1;
         while (opcion !=0 ) { 
 
-            System.out.println("Bienvenido a Proyect Country\n******Menú*******\nOpciones:\n1. buscar un pais\n2. Buscar paises por continente\n0. salir");
+            System.out.println("Bienvenido a Proyect Country\n******Menú*******\nOpciones:\n1. buscar un pais\n2. Buscar paises por continente\n3. Buscar paises que hablen el mismo idioma\n0. salir");
             opcion = teclado.nextInt();
             teclado.nextLine();
             switch (opcion) {
@@ -33,6 +33,8 @@ public class Principal {
                 case 2:
                     buscarPoRegion();
                     break;
+                case 3:
+                    buscarPorIdioma();
                 case 0:
                 System.out.println("Saliendo del programa");
                 default:
@@ -81,5 +83,22 @@ public class Principal {
             System.out.println("No se encontro ese continente");
         }
 
+    }
+
+    public void buscarPorIdioma(){
+        var urlIdiomas = "https://restcountries.com/v3.1/lang/";
+        System.out.println("Escribe el idioma del cual quieres buscar los paises(en ingles): ");
+        var idioma = teclado.nextLine().toUpperCase();
+        var json = consumoAPI.obtenerDatos(urlIdiomas+idioma);
+        List<Country> paises = conversor.ConvertirJsonLista(json);
+
+        if (!paises.isEmpty()) {
+            System.out.println("Los paises encontrados que hablan "+idioma+"son los siguientes: ");
+            paises.forEach(p -> {
+                System.out.println("- "+p.name().common());
+            });
+        } else{
+            System.out.println("No se encontaron paises con ese idioma");
+        }
     }
 }
